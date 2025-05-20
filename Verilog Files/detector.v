@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 05/12/2025 04:40:58 PM
+// Create Date: 05/06/2025 03:59:42 PM
 // Design Name: 
-// Module Name: TCMP
+// Module Name: exp2
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,23 +20,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module TCMP(
-input clk_i, A_i, rst_i,
-output reg S_o
+module detector(
+    input clk,X, 
+    output Z
     );
-    reg Z;
-    wire d1_w,d2_w;
-    assign d1_w=A_i^Z;
-    assign FDHA_w= A_i&Z;
-    assign d2_w= A_i|Z;
-    always @ (posedge clk_i or posedge rst_i) begin 
-    if (rst_i) begin
-    S_o <= 1'b0; 
-    Z <= 1'b0;
-    end 
-    else begin
-    S_o <=  d1_w;
-    Z   <=  d2_w;
-    end 
-    end 
+    wire clk_out;
+    wire Y;
+    wire Y2;
+    clk_devider #(250_000) clkDivier(clk,0,1,clk_out);
+    debouncer debo(clk_out,0,X,Y);
+    sych syc(clk_out,Y,Y2);
+    exp1 edgy(clk_out,0,Y2,Z);
+    
 endmodule
